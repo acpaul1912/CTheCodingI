@@ -1,2 +1,98 @@
 
 Array/CCI_Question1.cpp
+/* Cracking the codeing interview : Array 
+Question 1 : Implement an algorithm to determine if string has all unique character.What is you can use additional Data structure 
+
+Few Key Points to be asked : Verify whether The string is ASCII or UniCode .
+
+
+Key Points to remmember before solving the problem : 
+	1. Clear idea about std::vector 
+	2. Clear Idea about std::string 
+	3. bit vector  .
+	4. Unicode string . 
+
+*/ 
+
+#include<iostream>
+
+using namespace std ; 
+
+
+/* Apporach 1: Asume that you have only ASCII string and the totoal character in ASCII is 128 . 
+
+   time O(c) : C number of unique char .
+
+*/ 
+
+
+bool isUniqueCharacter(const string& str) {
+
+   // is string lenght exced from total number of unique character .
+   if(str.length() > 128  ) return false ; 
+
+   int array[128] = {0};
+   for(auto eachChar : str) {
+
+      if(! (array[eachChar] )) { 
+
+      		array[eachChar] =  1;			
+        }
+        else {
+        	return false; 
+        }
+
+   }
+   return true;
+}
+
+/* Approach 2 : Assume there is only a to z unique char .so we can save space here. 
+
+    Compare to approach 1 , we will save space . Time complexity is O(n)
+		
+*/
+bool isUniqueCharacterSpaceReduction  (const string& str )
+ {
+ 	int val = 0;      
+    for(auto eachChar : str)  { 
+
+        int shiftIndex = eachChar -'a';
+    	if((val & 1 << shiftIndex) > 0 ) { return false;}
+    	else {
+
+    		val = val | 1 << shiftIndex;
+    	}  
+    }	
+
+    return true ; 
+
+ }
+
+ /* Apporach 3: Using std::vector<bool> 
+*/
+    #include<vector>
+	bool isUniqueCharacterUsingVector(const string& str) {
+
+		vector<bool> uniqueChar(128,false) ; 
+
+		for(auto charElements: str) { 
+
+			if(uniqueChar[charElements]) { return false;}
+			else { 
+				uniqueChar[charElements] = true;
+			}
+		}
+		return true;
+}
+
+	
+ 
+
+int main() { 
+
+   string str = "achinty"; 
+   string str1= "achintya";
+
+   cout<<isUniqueCharacterUsingVector(str) << " .... " << isUniqueCharacterUsingVector(str1) <<endl;
+
+ }
